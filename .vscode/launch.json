@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - UsuariosApplication",
+            "request": "launch",
+            "mainClass": "br.com.fiap.g1.eventos.usuarios.UsuariosApplication",
+            "projectName": "usuarios"
+        }
+    ]
+}
