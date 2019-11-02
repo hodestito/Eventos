@@ -2,6 +2,7 @@ package br.com.fiap.g1.eventos.usuarios.controller;
 
 import br.com.fiap.g1.eventos.usuarios.model.Usuario;
 import br.com.fiap.g1.eventos.usuarios.repository.UsuarioRepository;
+import br.com.fiap.g1.eventos.usuarios.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,13 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository repository;
+
+    private final UsuarioService service;
+
+    @Autowired
+    UsuarioController(UsuarioService usuarioService){
+        this.service = usuarioService;
+    }
 
     @ApiOperation(value = "Retorna a lista de usuarios cadastrados")
     @GetMapping(path = {""})
@@ -34,7 +42,9 @@ public class UsuarioController {
     @ApiOperation(value = "Cria um novo usuario")
     @PostMapping
     public Usuario create(@RequestBody Usuario usuario){
-        return repository.save(usuario);
+        Usuario newUsr = repository.save(usuario);
+        this.service.sendMessage(newUsr.toString());
+        return newUsr;
     }
 
     @ApiOperation(value = "Atualiza um usuário pelo ID")
