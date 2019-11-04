@@ -55,6 +55,7 @@ public class EventoController {
                 .map(record -> {
                     record.setNome(evento.getNome());
                     record.setLocal(evento.getLocal());
+                    record.setValor(evento.getValor());
                     Evento updated = repository.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
