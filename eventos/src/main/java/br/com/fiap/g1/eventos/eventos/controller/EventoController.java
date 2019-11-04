@@ -42,9 +42,9 @@ public class EventoController {
     @ApiOperation(value = "Cria um novo evento")
     @PostMapping
     public Evento create(@RequestBody Evento evento) {
-        Evento newUsr = repository.save(evento);
-        this.service.sendMessage(newUsr.toString());
-        return newUsr;
+        Evento newEvento = repository.save(evento);
+        this.service.sendMessage(newEvento.toString());
+        return newEvento;
     }
 
     @ApiOperation(value = "Atualiza um evento pelo ID")

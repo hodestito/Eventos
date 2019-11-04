@@ -4,6 +4,8 @@ networks:
     driver: bridge
   eventos_network:
     driver: bridge
+  vendas_network:
+    driver: bridge
 
 services:
   kafka:
@@ -19,6 +21,7 @@ services:
     networks: 
     - usuarios_network
     - eventos_network
+    - vendas_network
     command: >
       bash -c
       "(sleep 15s &&
@@ -106,4 +109,38 @@ services:
       SERVER_PORT: 8080
     depends_on:
       - eventos-mysql
+      - kafka
+
+  vendas-mysql:
+    container_name: vendas-mysql
+    image: mysql/mysql-server:5.7
+    environment:
+     MYSQL_DATABASE: vendas
+     MYSQL_ROOT_PASSWORD: mysql
+     MYSQL_ROOT_HOST: '%'
+     MYSQL_USER: mysql
+     MYSQL_PASSWORD: mysql123
+    ports:
+    - "3308:3306"
+    networks: 
+    - vendas_network
+    restart: always
+  
+  vendas-app:
+    restart: always
+    build: ./vendas
+    working_dir: /vendas
+    ports:
+    - "8082:8080"
+    networks: 
+    - vendas_network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://vendas-mysql:3306/vendas?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: mysql
+      SPRING_DATASOURCE_PASSWORD: mysql123
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
+      VENDAS_TOPIC: vendas_topic
+      SERVER_PORT: 8080
+    depends_on:
+      - vendas-mysql
       - kafka
