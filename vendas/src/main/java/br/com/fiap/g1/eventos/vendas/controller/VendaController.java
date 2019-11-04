@@ -5,6 +5,7 @@ import br.com.fiap.g1.eventos.vendas.repository.VendaRepository;
 import br.com.fiap.g1.eventos.vendas.service.VendaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,17 @@ public class VendaController {
 
     @ApiOperation(value = "Cria uma nova venda")
     @PostMapping
+    public ResponseEntity<?> vender(@RequestBody Venda venda) {
+        Boolean autorizado = service.autorizaVenda(venda);
+        if (autorizado){
+            Venda newVenda = repository.save(venda);
+            this.service.sendMessage(newVenda.toString());
+            return ResponseEntity.ok().body(newVenda);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Venda nao autorizada");
+        }
+    }
+
     public Venda create(@RequestBody Venda venda) {
         Venda newVenda = repository.save(venda);
         this.service.sendMessage(newVenda.toString());

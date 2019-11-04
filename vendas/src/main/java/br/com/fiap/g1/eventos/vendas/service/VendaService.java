@@ -1,5 +1,7 @@
 package br.com.fiap.g1.eventos.vendas.service;
 
+import br.com.fiap.g1.eventos.vendas.model.MeioPagamento;
+import br.com.fiap.g1.eventos.vendas.model.Venda;
 import org.apache.kafka.clients.producer.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,4 +26,8 @@ public class VendaService {
         this.kafkaTemplate.send(TOPIC, message);
     }
 
+    /** Autoriza somente pagamentos que não sejam em dinheiro */
+    public Boolean autorizaVenda(Venda venda) {
+        return (venda.getMeioPagamento() == MeioPagamento.DINHEIRO ? false: true);
+    }
 }
