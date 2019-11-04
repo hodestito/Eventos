@@ -1,4 +1,10 @@
 version: '3'
+networks:
+  usuarios_network:
+    driver: bridge
+  eventos_network:
+    driver: bridge
+
 services:
   kafka:
     image: spotify/kafka:latest
@@ -10,6 +16,9 @@ services:
       ADVERTISED_HOST: kafka
       ADVERTISED_PORT: 9092
       AUTO_CREATE_TOPICS: "true"
+    networks: 
+    - usuarios_network
+    - eventos_network
     command: >
       bash -c
       "(sleep 15s &&
@@ -32,17 +41,19 @@ services:
       --topic vendas_topic &) && (supervisord -n)"
   
   usuarios-mysql:
-   container_name: usuarios-mysql
-   image: mysql/mysql-server:5.7
-   environment:
-    MYSQL_DATABASE: usuarios
-    MYSQL_ROOT_PASSWORD: mysql
-    MYSQL_ROOT_HOST: '%'
-    MYSQL_USER: mysql
-    MYSQL_PASSWORD: mysql123
-   ports:
-   - "3306:3306"
-   restart: always
+    container_name: usuarios-mysql
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: usuarios
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql123
+    ports: 
+    - "3306:3306"
+    networks:
+    - usuarios_network
+    restart: always
   
   usuarios-app:
     restart: always
@@ -50,6 +61,8 @@ services:
     working_dir: /usuarios
     ports:
     - "8080:8080"
+    networks:
+    - usuarios_network
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://usuarios-mysql:3306/usuarios?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
       SPRING_DATASOURCE_USERNAME: mysql
@@ -62,31 +75,35 @@ services:
       - kafka
 
   eventos-mysql:
-   container_name: eventos-mysql
-   image: mysql/mysql-server:5.7
-   environment:
-    MYSQL_DATABASE: eventos
-    MYSQL_ROOT_PASSWORD: mysql
-    MYSQL_ROOT_HOST: '%'
-    MYSQL_USER: mysql
-    MYSQL_PASSWORD: mysql123
-   ports:
-   - "3306:3306"
-   restart: always
+    container_name: eventos-mysql
+    image: mysql/mysql-server:5.7
+    environment:
+     MYSQL_DATABASE: eventos
+     MYSQL_ROOT_PASSWORD: mysql
+     MYSQL_ROOT_HOST: '%'
+     MYSQL_USER: mysql
+     MYSQL_PASSWORD: mysql123
+    ports:
+    - "3307:3306"
+    networks: 
+    - eventos_network
+    restart: always
   
   eventos-app:
     restart: always
     build: ./eventos
     working_dir: /eventos
     ports:
-    - "8081:8081"
+    - "8081:8080"
+    networks: 
+    - eventos_network
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://eventos-mysql:3306/eventos?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
       SPRING_DATASOURCE_USERNAME: mysql
       SPRING_DATASOURCE_PASSWORD: mysql123
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
-      USUARIOS_TOPIC: eventos_topic
-      SERVER_PORT: 8081
+      EVENTOS_TOPIC: eventos_topic
+      SERVER_PORT: 8080
     depends_on:
-      - usuarios-mysql
+      - eventos-mysql
       - kafka
