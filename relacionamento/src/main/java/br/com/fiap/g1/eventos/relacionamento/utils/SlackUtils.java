@@ -14,6 +14,8 @@ import java.io.IOException;
       public static void sendMessage(SlackMessage message) {
           CloseableHttpClient client = HttpClients.createDefault();
           HttpPost httpPost = new HttpPost(slackWebhookUrl);
+        
+          System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
   
           try {
               ObjectMapper objectMapper = new ObjectMapper();
