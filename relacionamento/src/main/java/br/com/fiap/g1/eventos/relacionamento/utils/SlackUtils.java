@@ -5,13 +5,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
   
   public class SlackUtils {
-      private static String slackWebhookUrl = "${slack.webhook}";
+
+      //@Value("${slack.webhook}")
+      private String slackWebhookUrl = "https://hooks.slack.com/services/XXXXXX";
   
-      public static void sendMessage(SlackMessage message) {
+      public void sendMessage(SlackMessage message) {
 
           System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
         

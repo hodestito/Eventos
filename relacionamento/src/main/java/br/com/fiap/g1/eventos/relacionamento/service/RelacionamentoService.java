@@ -73,7 +73,8 @@ public class RelacionamentoService {
                 .text(mensagem)
                 .icon_emoji(":scream:")
                 .build();
-        SlackUtils.sendMessage(slackMessage);
+        SlackUtils su = new SlackUtils();
+        su.sendMessage(slackMessage);
 
         System.out.println("Mensagem enviada ao slack:" + mensagem);
 
