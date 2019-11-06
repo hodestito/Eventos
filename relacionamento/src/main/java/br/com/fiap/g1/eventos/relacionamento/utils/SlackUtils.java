@@ -12,11 +12,12 @@ import java.io.IOException;
       private static String slackWebhookUrl = "${slack.webhook}";
   
       public static void sendMessage(SlackMessage message) {
+
+          System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
+        
           CloseableHttpClient client = HttpClients.createDefault();
           HttpPost httpPost = new HttpPost(slackWebhookUrl);
-        
-          System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
-  
+
           try {
               ObjectMapper objectMapper = new ObjectMapper();
               String json = objectMapper.writeValueAsString(message);
