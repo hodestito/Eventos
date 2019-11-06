@@ -3,6 +3,7 @@ package br.com.fiap.g1.eventos.vendas.controller;
 import br.com.fiap.g1.eventos.vendas.model.Venda;
 import br.com.fiap.g1.eventos.vendas.repository.VendaRepository;
 import br.com.fiap.g1.eventos.vendas.service.VendaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,11 +53,11 @@ public class VendaController {
 
     @ApiOperation(value = "Cria uma nova venda")
     @PostMapping
-    public ResponseEntity<?> vender(@RequestBody Venda venda) {
+    public ResponseEntity<?> vender(@RequestBody Venda venda) throws JsonProcessingException {
         Boolean autorizado = service.autorizaVenda(venda);
         if (autorizado){
             Venda newVenda = repository.save(venda);
-            this.service.sendMessage(newVenda.toString());
+            this.service.sendMessage(newVenda.toJson(newVenda));
             return ResponseEntity.ok().body(newVenda);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Venda nao autorizada");

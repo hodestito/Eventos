@@ -51,7 +51,7 @@ services:
       /opt/kafka_2.11-0.10.1.0/bin/kafka-topics.sh
       --create
       --zookeeper
-      localhost:2181 --replication-factor 1 --partitions 2
+      localhost:2181 --replication-factor 1 --partitions 3
       --topic vendas_topic &) && (supervisord -n)"
   
   usuarios-mysql:
@@ -154,4 +154,28 @@ services:
       SERVER_PORT: 8080
     depends_on:
       - vendas-mysql
+      - kafka
+
+  relacionamento-app:
+    restart: always
+    build: ./relacionamento
+    working_dir: /relacionamento
+    ports:
+    - "8083:8080"
+    networks: 
+    - usuarios_network
+    - eventos_network
+    - vendas_network
+    environment:
+      SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_CONSUMER_GROUP_ID: groupid
+      USUARIOS_TOPIC: usuarios_topic
+      EVENTOS_TOPIC: eventos_topic
+      VENDAS_TOPIC: vendas_topic
+      SERVER_PORT: 8080
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: edsonrjunior90@gmail.com
+      SPRING_MAIL_PASSWORD: "${TAG}"
+    depends_on:
       - kafka

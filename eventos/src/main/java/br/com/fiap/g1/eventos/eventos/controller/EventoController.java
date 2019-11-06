@@ -3,6 +3,7 @@ package br.com.fiap.g1.eventos.eventos.controller;
 import br.com.fiap.g1.eventos.eventos.model.Evento;
 import br.com.fiap.g1.eventos.eventos.repository.EventoRepository;
 import br.com.fiap.g1.eventos.eventos.service.EventoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +42,9 @@ public class EventoController {
 
     @ApiOperation(value = "Cria um novo evento")
     @PostMapping
-    public Evento create(@RequestBody Evento evento) {
+    public Evento create(@RequestBody Evento evento) throws JsonProcessingException {
         Evento newEvento = repository.save(evento);
-        this.service.sendMessage(newEvento.toString());
+        this.service.sendMessage(newEvento.toJson(newEvento));
         return newEvento;
     }
 

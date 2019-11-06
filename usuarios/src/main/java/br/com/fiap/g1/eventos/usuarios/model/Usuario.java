@@ -1,5 +1,8 @@
 package br.com.fiap.g1.eventos.usuarios.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +24,10 @@ public class Usuario {
    private String email;
    private String telefone;
    private String senha;
+
+   public static String toJson(Usuario usuario) throws JsonProcessingException {
+      ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+      String json = ow.writeValueAsString(usuario);
+      return json;
+   }
 }

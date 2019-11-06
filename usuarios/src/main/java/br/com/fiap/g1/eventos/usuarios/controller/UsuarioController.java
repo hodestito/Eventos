@@ -3,6 +3,7 @@ package br.com.fiap.g1.eventos.usuarios.controller;
 import br.com.fiap.g1.eventos.usuarios.model.Usuario;
 import br.com.fiap.g1.eventos.usuarios.repository.UsuarioRepository;
 import br.com.fiap.g1.eventos.usuarios.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,9 @@ public class UsuarioController {
 
     @ApiOperation(value = "Cria um novo usuario")
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
+    public Usuario create(@RequestBody Usuario usuario) throws JsonProcessingException {
         Usuario newUsr = repository.save(usuario);
-        this.service.sendMessage(newUsr.toString());
+        this.service.sendMessage(newUsr.toJson(newUsr));
         return newUsr;
     }
 
