@@ -19,7 +19,7 @@ public class RelacionamentoController {
 
     @ApiOperation(value = "Envia mensagem para o canal Fale conosco")
     @PostMapping
-    public ResponseEntity<?> faleConosco(String mensagem){
+    public ResponseEntity<?> faleConosco(@RequestBody String mensagem){
         this.service.faleConoso(mensagem);
         return (ResponseEntity.ok().build());
     }

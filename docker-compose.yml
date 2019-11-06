@@ -176,6 +176,7 @@ services:
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: edsonrjunior90@gmail.com
-      SPRING_MAIL_PASSWORD: "${TAG}"
+      SPRING_MAIL_PASSWORD: "${SECRET}"
+      SLACK_WEBHOOK: "${SLACK}"
     depends_on:
       - kafka

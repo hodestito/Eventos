@@ -1,6 +1,8 @@
 package br.com.fiap.g1.eventos.relacionamento.service;
 
 import br.com.fiap.g1.eventos.relacionamento.pojo.Usuario;
+import br.com.fiap.g1.eventos.relacionamento.utils.SlackMessage;
+import br.com.fiap.g1.eventos.relacionamento.utils.SlackUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.Producer;
 import org.slf4j.Logger;
@@ -64,7 +66,15 @@ public class RelacionamentoService {
 
     public void sendToSlack(String mensagem) {
 
-        // Gerar mensagem no Slack
+
+        SlackMessage slackMessage = SlackMessage.builder()
+                .channel("#microservices")
+                .username("Locallee")
+                .text(mensagem)
+                .icon_emoji(":scream:")
+                .build();
+        SlackUtils.sendMessage(slackMessage);
+
         System.out.println("Mensagem enviada ao slack:" + mensagem);
 
     }
