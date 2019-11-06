@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Bem vindo!</h1>
+      <p class="lead">Em breve você poderá buscar por novos eventos em nossa plataforma!</p>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" id="getData">Buscar Eventos</button>
+  </div>
+  </body>
+  <script>
+  document.getElementById('getData').addEventListener('click', getData);
+
+  function getData(){
+    var url = "http://localhost:3000/usuarios";
+    var data="";
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    xhttp.onreadystatechange = function(){
+      if ( xhttp.readyState == 4 && xhttp.status == 200 ) {
+        var myArr = JSON.parse(this.responseText);
+        console.log(xhttp.responseText);
+        data = myArr;
+      }
+    }
+    xhttp.send();
+
+    $('#table').bootstrapTable({
+      data: JSON.parse(data)
+    });
+  }
+  </script>
+  </html>

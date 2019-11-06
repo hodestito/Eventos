@@ -73,7 +73,7 @@ public class UsuarioController {
     }
 
     @ApiOperation(value = "Autentica usuario")
-    @GetMapping(path = {"/autenticacao"})
+    @PostMapping(path = {"/autenticacao"})
     public ResponseEntity<Usuario> auth(@RequestBody Usuario usuario){
         return repository.findByEmailAndSenha(usuario.getEmail(), usuario.getSenha())
                 .map(record -> ResponseEntity.ok().body(record))

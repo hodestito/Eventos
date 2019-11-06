@@ -8,6 +8,17 @@ networks:
     driver: bridge
 
 services:
+  frontend:
+    restart: always
+    build: ./frontend
+    working_dir: /home/node/app
+    ports:
+    - "3000:3000"
+    networks:
+    - usuarios_network
+    - eventos_network
+    - vendas_network
+
   kafka:
     image: spotify/kafka:latest
     ports:
