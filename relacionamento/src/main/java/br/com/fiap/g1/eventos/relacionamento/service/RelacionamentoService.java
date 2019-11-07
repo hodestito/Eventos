@@ -40,6 +40,7 @@ public class RelacionamentoService {
             sb.append("São Paulo, " + sdf.format(new Date(System.currentTimeMillis())));
             msg = sb.toString();
             sendMail("${spring.mail.username}", usuario.getEmail(), "Confirmação de cadastro", msg);
+            sb.setLength(0);
         }
         catch (Exception e){
             e.printStackTrace();
