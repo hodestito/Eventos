@@ -11,12 +11,15 @@ import java.io.IOException;
   
   public class SlackUtils {
 
-      //@Value("${slack.webhook}")
-      private String slackWebhookUrl = "https://hooks.slack.com/services/XXXXXX";
+      @Value("${slack.webhook}")
+      private String slackString;
+
+      private String slackWebhookUrl = "https://hooks.slack.com/services/";
   
       public void sendMessage(SlackMessage message) {
 
           System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
+          System.out.println("SlackString: " + slackString);
         
           CloseableHttpClient client = HttpClients.createDefault();
           HttpPost httpPost = new HttpPost(slackWebhookUrl);
