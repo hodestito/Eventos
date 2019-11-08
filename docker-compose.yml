@@ -71,8 +71,7 @@ services:
   
   usuarios-app:
     restart: always
-    build: ./usuarios
-    working_dir: /usuarios
+    image: hodestito/eventos_usuarios-app
     ports:
     - "8080:8080"
     networks:
