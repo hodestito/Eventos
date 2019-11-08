@@ -177,6 +177,7 @@ services:
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: edsonrjunior90@gmail.com
       SPRING_MAIL_PASSWORD: "${SECRET}"
-      SLACK: "${SLACK}"
+      SLACK_WEBHOOK: "${SLACK}"
+      SLACK_FINAL: /K0APjb4IRMWQQdVXziJUkgC9
     depends_on:
       - kafka

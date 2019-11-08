@@ -27,6 +27,9 @@ public class RelacionamentoService {
     String msg;
 
     @Autowired
+    private SlackUtils slackUtils;
+
+    @Autowired
     private JavaMailSender javaMailSender;
 
     @KafkaListener(topics = "${usuarios.topic}", groupId = "${spring.kafka.consumer.group-id}")
@@ -67,15 +70,14 @@ public class RelacionamentoService {
 
     public void sendToSlack(String mensagem) {
 
-
         SlackMessage slackMessage = SlackMessage.builder()
                 .channel("#microservices")
                 .username("Locallee")
                 .text(mensagem)
                 .icon_emoji(":scream:")
                 .build();
-        SlackUtils su = new SlackUtils();
-        su.sendMessage(slackMessage);
+
+        slackUtils.sendMessage(slackMessage);
 
         System.out.println("Mensagem enviada ao slack:" + mensagem);
 

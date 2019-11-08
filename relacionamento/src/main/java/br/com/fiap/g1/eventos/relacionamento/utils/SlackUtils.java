@@ -6,21 +6,26 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
   
+  @Component
   public class SlackUtils {
 
       @Value("${slack.webhook}")
       private String slackString;
 
+      @Value("${slack.final}")
+      private String slackFinal;
+
       private String slackWebhookUrl = "https://hooks.slack.com/services/";
-  
+
       public void sendMessage(SlackMessage message) {
 
+          slackWebhookUrl += slackString + slackFinal;
           System.out.println("Slack webhook utilizado: " + slackWebhookUrl);
-          System.out.println("SlackString: " + slackString);
-        
+
           CloseableHttpClient client = HttpClients.createDefault();
           HttpPost httpPost = new HttpPost(slackWebhookUrl);
 
