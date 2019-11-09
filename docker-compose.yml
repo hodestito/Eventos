@@ -155,9 +155,7 @@ services:
 
   relacionamento-app:
     restart: always
-    #image: hodestito/eventos_relacionamento-app
-    build: ./relacionamento
-    working_dir: /relacionamento
+    image: hodestito/eventos_relacionamento-app
     ports:
     - "8083:8080"
     networks: 
