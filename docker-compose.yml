@@ -175,7 +175,7 @@ services:
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: edsonrjunior90@gmail.com
       PWD_INIT: "${SECRET}"
-      PWD_FINAL: "123456"
+      PWD_FINAL: "2500?"
       SLACK_WEBHOOK: "${SLACK}"
       SLACK_FINAL: /K0APjb4IRMWQQdVXziJUkgC9
     depends_on:
