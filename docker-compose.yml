@@ -71,8 +71,7 @@ services:
   
   usuarios-app:
     restart: always
-    build: ./usuarios
-    working_dir: /usuarios
+    image: hodestito/eventos_usuarios-app
     ports:
     - "8080:8080"
     networks:
@@ -105,8 +104,7 @@ services:
   
   eventos-app:
     restart: always
-    build: ./eventos
-    working_dir: /eventos
+    image: hodestito/eventos_eventos-app
     ports:
     - "8081:8080"
     networks: 
@@ -139,8 +137,7 @@ services:
   
   vendas-app:
     restart: always
-    build: ./vendas
-    working_dir: /vendas
+    image: hodestito/eventos_vendas-app
     ports:
     - "8082:8080"
     networks: 
@@ -158,8 +155,7 @@ services:
 
   relacionamento-app:
     restart: always
-    build: ./relacionamento
-    working_dir: /relacionamento
+    image: hodestito/eventos_relacionamento-app
     ports:
     - "8083:8080"
     networks: 
@@ -176,7 +172,8 @@ services:
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: edsonrjunior90@gmail.com
-      SPRING_MAIL_PASSWORD: "${SECRET}"
+      PWD_INIT: "${SECRET}"
+      PWD_FINAL: "2500?"
       SLACK_WEBHOOK: "${SLACK}"
       SLACK_FINAL: /K0APjb4IRMWQQdVXziJUkgC9
     depends_on:
