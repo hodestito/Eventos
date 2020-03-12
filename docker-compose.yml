@@ -1,17 +1,22 @@
 version: '3'
 networks:
   usuarios_network:
-    driver: bridge
+    external: true
   eventos_network:
-    driver: bridge
+    external: true
   vendas_network:
-    driver: bridge
+    external: true
 
 services:
   frontend:
     restart: always
-    build: ./frontend
+    image: hodestito/eventos_frontend
     working_dir: /home/node/app
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "3000:3000"
     networks:
@@ -21,6 +26,11 @@ services:
 
   kafka:
     image: spotify/kafka:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "9092:9092"
     - "2181:2181"
@@ -57,6 +67,11 @@ services:
   usuarios-mysql:
     container_name: usuarios-mysql
     image: mysql/mysql-server:5.7
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     environment:
       MYSQL_DATABASE: usuarios
       MYSQL_ROOT_PASSWORD: mysql
@@ -72,6 +87,11 @@ services:
   usuarios-app:
     restart: always
     image: hodestito/eventos_usuarios-app
+    deploy:
+      replicas: 3
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "8080:8080"
     networks:
@@ -90,6 +110,11 @@ services:
   eventos-mysql:
     container_name: eventos-mysql
     image: mysql/mysql-server:5.7
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     environment:
      MYSQL_DATABASE: eventos
      MYSQL_ROOT_PASSWORD: mysql
@@ -105,6 +130,11 @@ services:
   eventos-app:
     restart: always
     image: hodestito/eventos_eventos-app
+    deploy:
+      replicas: 3
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "8081:8080"
     networks: 
@@ -123,6 +153,11 @@ services:
   vendas-mysql:
     container_name: vendas-mysql
     image: mysql/mysql-server:5.7
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     environment:
      MYSQL_DATABASE: vendas
      MYSQL_ROOT_PASSWORD: mysql
@@ -138,6 +173,11 @@ services:
   vendas-app:
     restart: always
     image: hodestito/eventos_vendas-app
+    deploy:
+      replicas: 3
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "8082:8080"
     networks: 
@@ -156,6 +196,11 @@ services:
   relacionamento-app:
     restart: always
     image: hodestito/eventos_relacionamento-app
+    deploy:
+      replicas: 1
+      restart_policy:
+         condition: on-failure
+         max_attempts: 3
     ports:
     - "8083:8080"
     networks: 
